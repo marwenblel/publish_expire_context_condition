@@ -1,0 +1,7 @@
+name = Publish expire context condition
+description = "A module that implements a context condition;"
+core = 7.x
+version = 1.0
+
+;files
+files[] = publish_expire_context_condition.module

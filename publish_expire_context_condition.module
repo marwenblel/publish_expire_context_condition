@@ -1,0 +1,62 @@
+<?php
+/**
+ * @file
+ * publish_expire_context_condition.module
+ */
+
+/**
+ * Implements hook context plugins().
+ */
+function publish_expire_context_condition_context_plugins () {
+    $plugins = array(
+    );
+    $plugins['context_condition_publish'] = array(
+        'handler' => array(
+            'path' => drupal_get_path('module', 'test_context_condition').'/plugins',
+            'file' => 'context_condition_publish.inc',
+            'class' => 'context_condition_publish',
+            'parent' => 'context_condition',
+        ),
+    );
+    $plugins['context_condition_expire'] = array(
+        'handler' => array(
+            'path' => drupal_get_path('module', 'test_context_condition').'/plugins',
+            'file' => 'context_condition_expire.inc',
+            'class' => 'context_condition_expire',
+            'parent' => 'context_condition',
+        ),
+    );
+    return $plugins;
+}
+/**
+ * Implements hook context registry()
+ */
+function publish_expire_context_condition_context_registry () {
+    return array(
+        'conditions' => array(
+            'publish' => array(
+                'title'  => t('Publish Date/Time'),
+                'plugin' => 'context_condition_publish',
+            ),
+            'expire' => array(
+                'title'  => t('Expire Date/Time'),
+                'plugin' => 'context_condition_expire',
+            ),
+        ),
+    );
+}
+
+
+/**
+ * Implementation of hook_context_page_condition().
+ */
+function publish_expire_context_condition_context_page_condition() {
+    // Load the publish plugin and see execute.
+    if ($plugin = context_get_plugin('condition', 'publish')) {
+        $plugin->execute();
+    }
+  // Load the expire plugin and see execute.
+  if ($plugin = context_get_plugin('condition', 'expire')) {
+        $plugin->execute();
+    }
+}
